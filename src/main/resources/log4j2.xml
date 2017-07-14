@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Properties>
+        <Property name="LOGGER_HOME">/share/LogPOC/logs</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="application" fileName="${LOGGER_HOME}/application.log"
+                     filePattern="${LOGGER_HOME}/application.%d{yyyy-MM-dd}_%i.log">
+
+            <PatternLayout pattern="%d{ISO8601}{GMT} %-5p [%t] [%c{1}] - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="1 GB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+
+        <RollingFile name="framework" fileName="${LOGGER_HOME}/spring-framework.log"
+                     filePattern="${LOGGER_HOME}/spring-framework.%d{yyyy-MM-dd}_%i.log">
+
+            <PatternLayout pattern="%d{ISO8601}{GMT} %-5p [%t] [%c{1}] - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="1 GB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+
+        <RollingFile name="other" fileName="${LOGGER_HOME}/other.log"
+                     filePattern="${LOGGER_HOME}/other.%d{yyyy-MM-dd}_%i.log">
+
+            <PatternLayout pattern="%d{ISO8601}{GMT} %-5p [%t] [%c{1}] - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="1 GB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+
+        <Async name="asyncApplication">
+            <AppenderRef ref="application"/>
+        </Async>
+        <Async name="asyncFramework">
+            <AppenderRef ref="framework"/>
+        </Async>
+        <Async name="asyncOther">
+            <AppenderRef ref="other"/>
+        </Async>
+
+    </Appenders>
+
+
+    <Loggers>
+        <Logger name="com.poc.logger" level="info" additivity="false" includeLocation="true">
+            <AppenderRef ref="asyncApplication"/>
+        </Logger>
+
+        <Logger name="org.springframework" level="info" additivity="false" includeLocation="true">
+            <AppenderRef ref="asyncFramework"/>
+        </Logger>
+
+        <Root level="debug">
+            <AppenderRef ref="asyncOther"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
